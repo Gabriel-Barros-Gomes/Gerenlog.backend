@@ -1,0 +1,19 @@
+Objetos do front que serão passados para o backend
+1 -> criar usuario          
+user:{
+      name:"",
+      lastName:"",
+      email:"",
+      cpf:",
+      serviceCode:"",
+      password:"",
+      repeatPassword:""
+
+      }
+2 -> criar produto
+product:{
+         name:"",
+         quantity:"",
+         productCode:"",
+         description:""
+        }
