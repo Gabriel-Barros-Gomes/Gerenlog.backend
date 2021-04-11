@@ -6,10 +6,11 @@ const {
     safeDeleteUserById
 } = require('./User_repository')
 
+const { JWT } = require('../../../infrastructure/config/jwt')
 const express = require('express')
 const router = express.Router()
 
-router.post('/create', async ( req, res )=>{
+router.post('/create',  async ( req, res )=>{
     try{
         const user = await createUser(req.body)
         res.status(201).send(user)
@@ -23,7 +24,7 @@ router.post('/create', async ( req, res )=>{
     }
 })
 
-router.get('/findallactive', async ( req, res )=>{
+router.get('/findallactive', JWT , async ( req, res )=>{
     try{
         const activeUsers = await findAllUserActive()
         res.status(200).send(activeUsers[0])
@@ -38,7 +39,7 @@ router.get('/findallactive', async ( req, res )=>{
     }
 })
 
-router.get('/findbyid/:userid', async ( req, res )=>{
+router.get('/findbyid/:userid', JWT , async ( req, res )=>{
     try{
         const user = await findUserById( req.params.userid )
         res.status(200).send(user)
@@ -52,7 +53,7 @@ router.get('/findbyid/:userid', async ( req, res )=>{
     }
 })
 
-router.delete('/deletebyid/:userid', async ( req, res )=>{
+router.delete('/deletebyid/:userid', JWT , async ( req, res )=>{
     try{
         const userToDelete = await safeDeleteUserById(req.params.userid)
         res.status(200).send({
@@ -69,7 +70,7 @@ router.delete('/deletebyid/:userid', async ( req, res )=>{
     }
 })
 
-router.put('/updatebyid/:userid', async ( req, res )=>{
+router.put('/updatebyid/:userid', JWT , async ( req, res )=>{
     try{
         const userToUpdate = await updateUserById(req.params.userid)
         res.status(200).send(userToUpdate)
