@@ -2,12 +2,13 @@ const express = require('express')
 const cors = require('cors')
 const { json } = require('express')
 
+
 const app = express()
 
 async function serverConnect () {
-
     app.use(cors())
     app.use(json())
+    require('./auth')(app)
     require('../../domain/business/users/User_controller')(app)
     require('../../domain/business/products/Product_controller')(app)
 

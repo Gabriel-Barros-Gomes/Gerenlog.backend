@@ -6,10 +6,12 @@ const {
     updateProductById
 } = require('./Product_repository')
 
+const { JWT } = require('../../../infrastructure/config/jwt')
+
 const express = require('express')
 const router = express.Router()
 
-router.post('/create', async ( req, res )=>{
+router.post('/create' , JWT, async ( req, res )=>{
     try{
         const product = await createProduct(req.body)
         res.status(201).send(product)
@@ -23,7 +25,7 @@ router.post('/create', async ( req, res )=>{
     }
 })
 
-router.get('/findallactive', async ( req, res )=>{
+router.get('/findallactive' , JWT, async ( req, res )=>{
     try{
         const activeProducts = await findAllProductActive()
         res.status(200).send(activeProducts[0])
@@ -38,7 +40,7 @@ router.get('/findallactive', async ( req, res )=>{
     }
 })
 
-router.get('/findbyid/:productid', async ( req, res )=>{
+router.get('/findbyid/:productid' , JWT, async ( req, res )=>{
     try{
         const product = await findProductById( req.params.productid )
         res.status(200).send(product)
@@ -52,7 +54,7 @@ router.get('/findbyid/:productid', async ( req, res )=>{
     }
 })
 
-router.delete('/deletebyid/:productid', async ( req, res )=>{
+router.delete('/deletebyid/:productid' , JWT, async ( req, res )=>{
     try{
         const productToDelete = await safeDeleteProductById(req.params.productid)
         res.status(200).send({
@@ -69,7 +71,7 @@ router.delete('/deletebyid/:productid', async ( req, res )=>{
     }
 })
 
-router.put('/updatebyid/:productid', async ( req, res )=>{
+router.put('/updatebyid/:productid' , JWT, async ( req, res )=>{
     try{
         const productToUpdate = await updateProductById(req.params.Productid)
         res.status(200).send(productToUpdate)
