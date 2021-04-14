@@ -1,10 +1,11 @@
 const {
-    createUser, 
     findAllUserActive,
-    findUserById,
-    updateUserById,
-    safeDeleteUserById
+    findUserByCpf,
+    updateUserByCpf,
+    safeDeleteUserByCpf
 } = require('./User_repository')
+
+const { serviceCreateUser } = require('./User_service')
 
 const { JWT } = require('../../../infrastructure/config/jwt')
 const express = require('express')
@@ -12,8 +13,10 @@ const router = express.Router()
 
 router.post('/create',  async ( req, res )=>{
     try{
-        const user = await createUser(req.body)
-        res.status(201).send(user)
+
+        const response = await serviceCreateUser(req.body.cpf, req.body)
+        res.status(201).send(response)
+
     }catch(e){
         res.status(500).send({
             error:{
@@ -39,9 +42,9 @@ router.get('/findallactive', JWT , async ( req, res )=>{
     }
 })
 
-router.get('/findbyid/:userid', JWT , async ( req, res )=>{
+router.get('/findbycpf/:cpf', JWT , async ( req, res )=>{
     try{
-        const user = await findUserById( req.params.userid )
+        const user = await findUserByCpf( req.params.cpf )
         res.status(200).send(user)
     }catch(e){
         res.status(500).send({
@@ -53,9 +56,9 @@ router.get('/findbyid/:userid', JWT , async ( req, res )=>{
     }
 })
 
-router.delete('/deletebyid/:userid', JWT , async ( req, res )=>{
+router.delete('/deletebycpf/:cpf', JWT , async ( req, res )=>{
     try{
-        const userToDelete = await safeDeleteUserById(req.params.userid)
+        const userToDelete = await safeDeleteUserByCpf(req.params.cpf)
         res.status(200).send({
             deleted:"true"
         })
@@ -70,9 +73,9 @@ router.delete('/deletebyid/:userid', JWT , async ( req, res )=>{
     }
 })
 
-router.put('/updatebyid/:userid', JWT , async ( req, res )=>{
+router.put('/updatebycpf/:cpf', JWT , async ( req, res )=>{
     try{
-        const userToUpdate = await updateUserById(req.params.userid)
+        const userToUpdate = await updateUserByCpf(req.params.cpf)
         res.status(200).send(userToUpdate)
     }catch(e){
         res.status(500).send({

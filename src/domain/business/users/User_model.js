@@ -1,18 +1,17 @@
 const { sequelize, DataTypes } = require('../../../infrastructure/config/database_config')
 
-const User = sequelize.define('User', {
-    id:{
-        type:DataTypes.BIGINT,
-        primaryKey:true,
+const User = sequelize.define('user', {
+    cpf:{
+        type:DataTypes.STRING,
         allowNull:false,
-        autoIncrement:true,
+        primaryKey:true,
         unique:true
     },
     name:{
         type:DataTypes.STRING,
         allowNull:true
     },
-    lastName:{
+    last_name:{
         type:DataTypes.STRING,
         allowNull:true
     },
@@ -20,15 +19,11 @@ const User = sequelize.define('User', {
         type:DataTypes.STRING,
         allowNull:false
     },
-    cpf:{
+    service_code:{
         type:DataTypes.STRING,
         allowNull:false
     },
-    serviceCode:{
-        type:DataTypes.STRING,
-        allowNull:false
-    },
-    userType:{
+    user_type:{
         type:DataTypes.STRING,
         allowNull:false
     },

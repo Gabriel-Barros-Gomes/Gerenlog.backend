@@ -11,39 +11,37 @@ async function createUser( _user ){
 
 async function findAllUserActive(){
     try{
-        return await sequelize.query('SELECT * FROM public."Users" WHERE active = true ORDER BY id ASC ', QueryTypes.SELECT)
+        return await sequelize.query('SELECT * FROM public."users" WHERE active = true ORDER BY cpf ASC ', QueryTypes.SELECT)
     }catch(e){
         console.error('Users not Founds\n', e)
     }
 }
 
-async function findUserById( _userid ){
+async function findUserByCpf( _cpf ){
     try{
-        return await User.findByPk( _userid )
+        return await User.findByPk( _cpf )
     }catch(e){
         console.error('Users not Founds\n', e)
     }
 }
 
-async function safeDeleteUserById( _userid ){
+async function safeDeleteUserByCpf( _cpf ){
     try{
-        const userToDelete = await User.findByPk( _userid )
+        const userToDelete = await User.findByPk( _cpf )
         userToDelete.dataValues.active = false
-        userToDelete.dataValues.email = "null@email.com"
-        userToDelete.dataValues.cpf = "00000000000"
         return await User.update( userToDelete.dataValues , {where:{
-            id:_userid
+            cpf:_cpf
         }})
     }catch(e){
         console.error('Failed to Delete', e)
     }
 }
 
-async function updateUserById( _userid ){
+async function updateUserByCpf( _cpf ){
     try{
-        const userToUpdate = await User.findByPk( _userid )
+        const userToUpdate = await User.findByPk( _cpf)
         return await User.update( userToUpdate.dataValues , {where:{
-            id:_userid
+            cpf:_cpf
         }})
     }catch(e){
         console.error('Failed to Update', e)
@@ -53,7 +51,7 @@ async function updateUserById( _userid ){
 module.exports = {
     createUser,
     findAllUserActive,
-    findUserById,
-    updateUserById,
-    safeDeleteUserById
+    findUserByCpf,
+    updateUserByCpf,
+    safeDeleteUserByCpf
 }
