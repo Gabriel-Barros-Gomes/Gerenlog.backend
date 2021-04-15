@@ -28,21 +28,29 @@ async function findUserByCpf( _cpf ){
 async function safeDeleteUserByCpf( _cpf ){
     try{
         const userToDelete = await User.findByPk( _cpf )
-        userToDelete.dataValues.active = false
-        return await User.update( userToDelete.dataValues , {where:{
-            cpf:_cpf
-        }})
+        if(userToDelete === null || userToDelete === undefined){
+            return "Error User Not Found"
+        }else{
+            userToDelete.dataValues.active = false
+            return await User.update( userToDelete.dataValues , {where:{
+                cpf:_cpf
+            }})
+        }
     }catch(e){
         console.error('Failed to Delete', e)
     }
 }
 
-async function updateUserByCpf( _cpf ){
+async function updateUserByCpf( _cpf, _user ){
     try{
         const userToUpdate = await User.findByPk( _cpf)
-        return await User.update( userToUpdate.dataValues , {where:{
-            cpf:_cpf
-        }})
+        if(userToUpdate === null || userToUpdate === undefined){
+            return "Error User Not Found"
+        }else{
+            return await userToUpdate.update( _user , {where:{
+                cpf:_cpf
+            }})
+        }
     }catch(e){
         console.error('Failed to Update', e)
     }
