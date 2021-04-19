@@ -1,6 +1,6 @@
 const { sequelize, DataTypes } = require('../../../infrastructure/config/database_config')
 
-const Product = sequelize.define('Product', {
+const Product = sequelize.define('product', {
     id:{
         type:DataTypes.BIGINT,
         primaryKey:true,
@@ -16,7 +16,7 @@ const Product = sequelize.define('Product', {
         type:DataTypes.BIGINT,
         allowNull:false
     },
-    productCode:{
+    product_code:{
         type:DataTypes.STRING,
         allowNull:true
     },

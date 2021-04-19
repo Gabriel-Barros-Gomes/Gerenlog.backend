@@ -1,10 +1,10 @@
 const {
-    createProduct,
-    findAllProductActive,
-    findProductById,
-    safeDeleteProductById,
-    updateProductById
-} = require('./Product_repository')
+    serviceCreateProduct,
+    serviceGetAllActiveProducts,
+    serviceSafeDeleteProduct,
+    serviceGetProductById,
+    serviceUpdateProductById
+} = require('./Product_service')
 
 const { JWT } = require('../../../infrastructure/config/jwt')
 
@@ -13,75 +13,80 @@ const router = express.Router()
 
 router.post('/create' , JWT, async ( req, res )=>{
     try{
-        const product = await createProduct(req.body)
-        res.status(201).send(product)
+        const response = await serviceCreateProduct(req.body)
+        if(response === 'Product already exists'){
+            console.log('Product already exists')
+            res.status(500).send({error: "Product already exists"})
+        }else{
+            console.log(response)
+            res.status(201).send(response)
+        }
     }catch(e){
-        res.status(500).send({
-            error:{
-                message:"Failed to create product"
-            }
-        })
+        res.status(500).send({error:"Failed to create product"})
         console.error(e,"Failed to create product")
     }
 })
 
 router.get('/findallactive' , JWT, async ( req, res )=>{
     try{
-        const activeProducts = await findAllProductActive()
-        res.status(200).send(activeProducts[0])
-        
+        const response = await serviceGetAllActiveProducts()
+        if(response === "Error Products not found"){
+            console.log("Error Products not found")
+            res.send(500).send({error: "Error Products not found"})
+        }else{
+            console.log(response)
+            res.status(200).send(response)
+        }
     }catch(e){
-        res.status(500).send({
-            error:{
-                message:"products not Founds"
-            }
-        })
+        res.status(500).send({error:"products not Founds"})
         console.error(e,"products not Founds\n")
     }
 })
 
-router.get('/findbyid/:productid' , JWT, async ( req, res )=>{
+router.get('/findbyid/:id' , JWT, async ( req, res )=>{
     try{
-        const product = await findProductById( req.params.productid )
-        res.status(200).send(product)
+        const response = await serviceGetProductById(req.params.id)
+        if(response === "Error Product Not Found"){
+            console.log("Error Product Not Found")
+            res.status(500).send({error: "Error Product Not Found"})
+        }else{
+            console.log(response)
+            res.status(200).send(response)
+        }
     }catch(e){
-        res.status(500).send({
-            error:{
-                message:"Product not Found"
-            }
-        })
+        res.status(500).send({error:"Error Product Not Found"})
         console.error(e,"Product not Found\n")
     }
 })
 
-router.delete('/deletebyid/:productid' , JWT, async ( req, res )=>{
+router.delete('/deletebyid/:id' , JWT, async ( req, res )=>{
     try{
-        const productToDelete = await safeDeleteProductById(req.params.productid)
-        res.status(200).send({
-            deleted:"true"
-        })
+        const response = await serviceSafeDeleteProduct(req.params.id)
+        if(response === "Error Product Not Found"){
+            console.log("Error Product Not Found")
+            res.status(500).send({error:"Error Product Not Found"})
+        }else{
+            console.log("Successfully Deleted")
+            res.status(200).send({success: "Successfully Deleted"})
+        }
     }catch(e){
-        res.status(500).send({
-            error:{
-                message:"Product not Found",
-                error:"Not deleted"
-            }
-        })
+        res.status(500).send({error:"Product not Found"})
         console.error(e,"Product not Found\n")
     }
 })
 
-router.put('/updatebyid/:productid' , JWT, async ( req, res )=>{
+router.put('/updatebyid/:id' , JWT, async ( req, res )=>{
     try{
-        const productToUpdate = await updateProductById(req.params.Productid)
-        res.status(200).send(productToUpdate)
+        const response = await serviceUpdateProductById(req.params.id, req.body)
+        if(response === "Error Product Not Found"){
+            console.log("Error Product Not Found")
+            res.status(500).send({error:"Error Product Not Found"})
+        }else{
+            console.log("Successfully Updated")
+            res.status(200).send(response)
+        }
     }catch(e){
-        res.status(500).send({
-            error:{
-                message:"Product not Found",
-                error:"Not updated"
-            }
-        })
+        res.status(500).send({error:"Product not Found"})
         console.error(e,"Product not Found\n")
     }
 })
