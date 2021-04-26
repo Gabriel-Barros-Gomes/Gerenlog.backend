@@ -28,6 +28,14 @@ const Product = sequelize.define('product', {
         type:DataTypes.STRING,
         allowNull:false
     },
+    unit_measurement:{
+        type:DataTypes.STRING,
+        allowNull:false
+    },
+    expiration_date:{
+        type:DataTypes.DATE,
+        allowNull:true
+    },
     description:{
         type:DataTypes.TEXT,
         allowNull:true
