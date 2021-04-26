@@ -16,10 +16,6 @@ const Product = sequelize.define('product', {
         type:DataTypes.BIGINT,
         allowNull:false
     },
-    product_code:{
-        type:DataTypes.STRING,
-        allowNull:true
-    },
     type:{
         type:DataTypes.STRING,
         allowNull:false
