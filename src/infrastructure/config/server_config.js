@@ -11,6 +11,7 @@ async function serverConnect () {
     require('./auth')(app)
     require('../../domain/business/users/User_controller')(app)
     require('../../domain/business/products/Product_controller')(app)
+    require('../../domain/business/employees/Employee_controller')(app)
 
     await app.listen(process.env.server_port, ()=>{
         console.log(process.env.server_url)
